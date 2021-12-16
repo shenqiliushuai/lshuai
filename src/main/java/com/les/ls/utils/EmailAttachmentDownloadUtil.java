@@ -115,7 +115,7 @@ public abstract class EmailAttachmentDownloadUtil {
         // pop3邮件服务器端口
         props.setProperty("mail.pop3.port", receive_pop3_port.toString());
         // 使用pop3协议
-        props.setProperty("mail.imapStore.protocol", receive_protocol);
+        props.setProperty("mail.store.protocol", receive_protocol);
         Session session = Session.getInstance(props);
         pop3Store = (POP3Store) session.getStore(receive_protocol);
         pop3Store.connect(receive_pop3_host, receive_pop3_port, username, password);
