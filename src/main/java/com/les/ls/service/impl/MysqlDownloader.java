@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author levis
  */
-public class MysqlDownloader extends AbstractDownloader {
+public class MysqlDownloader extends AbstractDBDownloader {
 
     public MysqlDownloader(JfSetting setting) {
         initDownloader(setting);
