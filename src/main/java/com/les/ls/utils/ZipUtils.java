@@ -2,10 +2,7 @@ package com.les.ls.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -64,5 +61,12 @@ public class ZipUtils {
             return false;
         }
         return true;
+    }
+
+    public static void main(String[] args) throws Exception{
+        File file = new File("C:\\Users\\Administrator\\Desktop\\test.txt");
+        BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+        String abc = bf.readLine();
+        System.out.println(abc);
     }
 }
