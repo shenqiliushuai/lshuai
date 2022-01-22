@@ -28,6 +28,11 @@ public enum WebResultEnum {
         this.message = message;
     }
 
+    WebResultEnum(String message){
+        this.code = 0;
+        this.message = message;
+    }
+
     public Integer getCode() {
         return code;
     }

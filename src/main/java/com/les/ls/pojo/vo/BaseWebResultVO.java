@@ -30,6 +30,12 @@ public class BaseWebResultVO {
      */
     private Object data;
 
+    public BaseWebResultVO(Integer code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
     public BaseWebResultVO(WebResultEnum resultEnum, Object data) {
         this.code = resultEnum.getCode();
         this.message = resultEnum.getMessage();

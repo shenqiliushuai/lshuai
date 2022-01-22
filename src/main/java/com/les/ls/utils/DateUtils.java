@@ -1,10 +1,9 @@
 package com.les.ls.utils;
 
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * 日期工具类
@@ -12,7 +11,40 @@ import java.time.format.DateTimeFormatter;
  * @author lshuai
  */
 public class DateUtils {
-    private static final String pattern = "yyyy-MM-dd HH:mm:ss";
+
+    private static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+    private static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
+
+    public static void main(String[] args) {
+        System.out.println(stringToDate("2022-01-15 17:53:10", yyyy_MM_dd_HH_mm_ss));
+        System.out.println(dateToString(new Date(), yyyy_MM_dd_HH_mm_ss));
+    }
+
+    /**
+     * 字符串转时间
+     *
+     * @param dateStr   时间字符串
+     * @param formatStr 字符串日期格式
+     * @return 时间
+     */
+    public static Date stringToDate(String dateStr, String formatStr) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(formatStr);
+        LocalDateTime localDateTime = LocalDateTime.parse(dateStr, dateTimeFormatter);
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * 时间转字符串
+     *
+     * @param date      时间对象
+     * @param formatStr 字符串日期格式
+     * @return 时间字符串
+     */
+    public static String dateToString(Date date, String formatStr) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(formatStr);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        return localDateTime.format(dateTimeFormatter);
+    }
 
     /**
      * 获取指定日期中的最小时间(LocalDateTime) 时间戳(s)
@@ -58,7 +90,7 @@ public class DateUtils {
         StringBuilder stringBuilder = new StringBuilder(time);
         stringBuilder.insert(6, "-");
         stringBuilder.insert(4, "-");
-        DateTimeFormatter ftf = DateTimeFormatter.ofPattern(pattern);
+        DateTimeFormatter ftf = DateTimeFormatter.ofPattern(yyyy_MM_dd_HH_mm_ss);
         LocalDateTime parse = LocalDateTime.parse(stringBuilder.append(" 00:00:00").toString(), ftf);
         return LocalDateTime.from(parse).atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
     }
@@ -70,7 +102,7 @@ public class DateUtils {
      * @return 格式化后的字符串（2019-01-01 00:00:00）
      */
     public static String getFormatDate(Long time) {
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        SimpleDateFormat sdf = new SimpleDateFormat(yyyy_MM_dd_HH_mm_ss);
         return sdf.format(time);
     }
 
