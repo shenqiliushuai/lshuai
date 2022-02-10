@@ -7,6 +7,11 @@ import com.spire.pdf.utilities.PdfTableExtractor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * PDF解析
+ *
+ * @author lshuai
+ */
 public class PDFParser {
     public static String pdfFileName;
 
