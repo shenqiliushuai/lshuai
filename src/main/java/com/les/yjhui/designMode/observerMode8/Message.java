@@ -1,4 +1,4 @@
-package com.les.yjhui.designMode.observerMode;
+package com.les.yjhui.designMode.observerMode8;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 消息
+ * 消息 JDK8之前的实现
  * </p>
  *
  * @author yangkai.shen
