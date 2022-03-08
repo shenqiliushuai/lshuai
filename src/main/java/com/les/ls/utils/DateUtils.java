@@ -21,6 +21,28 @@ public class DateUtils {
     }
 
     /**
+     * 计算时间间隔
+     *
+     * @param start 开始时间
+     * @param end   结束时间
+     * @return 时间间隔（毫秒）
+     */
+    public static long timeInterval(Date start, Date end) {
+        return timeInterval(start.toInstant(), end.toInstant());
+    }
+
+    /**
+     * 计算时间间隔
+     *
+     * @param start 开始时间
+     * @param end   结束时间
+     * @return 时间间隔（毫秒）
+     */
+    public static long timeInterval(Instant start, Instant end) {
+        return Duration.between(start, end).toMillis();
+    }
+
+    /**
      * 字符串转时间
      *
      * @param dateStr   时间字符串
