@@ -2,9 +2,7 @@ package com.les.ls.utils;
 
 import org.springframework.util.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.concurrent.TimeUnit;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -21,9 +19,18 @@ public class TerminalUtils {
         System.out.println(pingResult);
         String execResult = execForLinux(",", "java -version");
         System.out.println(execResult);
+        System.out.println(getWorkDir());
     }
 
     private static final long TIMEOUT = 10;
+
+    /**
+     * 获取工作目录
+     * @return 工作目录路径
+     */
+    public static String getWorkDir() {
+        return System.getProperty("user.dir") + File.separator;
+    }
 
     /**
      * ping测试，支持IP和域名

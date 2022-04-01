@@ -1,7 +1,12 @@
 package com.les.ls.utils;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -11,16 +16,20 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
+import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.Map;
 
 public class HttpClientUtils {
 
@@ -32,6 +41,68 @@ public class HttpClientUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 一分钟超时
+     */
+    private static final int TIMEOUT = 60000;
+
+    /**
+     * GET请求处理
+     *
+     * @param url             请求url
+     * @param headerMap       请求参数
+     * @param responseCharset 响应内容编码，默认为UTF-8
+     * @param isHttps         是否为https
+     * @param fileName        https时选填 证书文件地址+名称，为空时绕过证书
+     * @param password        https时选填 证书秘钥，为空时绕过证书
+     * @return 请求结果
+     */
+    public static String doGet(String url, Map<String, String> headerMap, int timeout,
+                               Charset responseCharset, boolean isHttps, String fileName,
+                               String password) {
+        String resultString = null;
+        CloseableHttpResponse response = null;
+        try (CloseableHttpClient httpclient = isHttps ? getHttpsClient(fileName, password) : HttpClients.createDefault()) {
+            // 创建uri
+            URIBuilder builder = new URIBuilder(url);
+            if (headerMap != null) {
+                // 请求头参数拼进URI
+                for (Map.Entry<String, String> elem : headerMap.entrySet()) {
+                    builder.addParameter(elem.getKey(), elem.getValue());
+                }
+            }
+            // 创建GET请求
+            HttpGet httpGet = new HttpGet(builder.build());
+            // 请求相关基础配置
+            RequestConfig defaultRequestConfig = RequestConfig.custom()
+                    .setSocketTimeout(timeout).setConnectTimeout(timeout)
+                    .setConnectionRequestTimeout(timeout).build();
+            httpGet.setConfig(defaultRequestConfig);
+            // 执行请求
+            response = httpclient.execute(httpGet);
+            //有可能无响应
+            if (response != null) {
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    if (responseCharset == null) {
+                        responseCharset = StandardCharsets.UTF_8;
+                    }
+                    resultString = EntityUtils.toString(response.getEntity(), responseCharset);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultString;
     }
 
     /**
