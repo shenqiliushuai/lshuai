@@ -6,12 +6,15 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -49,40 +52,33 @@ public class HttpClientUtils {
     private static final int TIMEOUT = 60000;
 
     /**
-     * GET请求处理
-     *
      * @param url             请求url
-     * @param headerMap       请求参数
+     * @param headerMap       请求头
+     * @param param           请求参数
+     * @param contentType     请求体内容类型
+     * @param timeout         超时时间
      * @param responseCharset 响应内容编码，默认为UTF-8
      * @param isHttps         是否为https
      * @param fileName        https时选填 证书文件地址+名称，为空时绕过证书
      * @param password        https时选填 证书秘钥，为空时绕过证书
      * @return 请求结果
+     * @throws Exception exception
      */
-    public static String doGet(String url, Map<String, String> headerMap, int timeout,
-                               Charset responseCharset, boolean isHttps, String fileName,
-                               String password) {
+    public static String doPost(String url, Map<String, String> headerMap, String param,
+                                ContentType contentType, int timeout, Charset responseCharset,
+                                boolean isHttps, String fileName, String password) throws Exception {
         String resultString = null;
         CloseableHttpResponse response = null;
         try (CloseableHttpClient httpclient = isHttps ? getHttpsClient(fileName, password) : HttpClients.createDefault()) {
             // 创建uri
             URIBuilder builder = new URIBuilder(url);
-            if (headerMap != null) {
-                // 请求头参数拼进URI
-                for (Map.Entry<String, String> elem : headerMap.entrySet()) {
-                    builder.addParameter(elem.getKey(), elem.getValue());
-                }
+            HttpPost httpPost = new HttpPost(builder.build());
+            setHttpConfig(httpPost, timeout);
+            for (Map.Entry<String, String> elem : headerMap.entrySet()) {
+                httpPost.addHeader(elem.getKey(), elem.getValue());
             }
-            // 创建GET请求
-            HttpGet httpGet = new HttpGet(builder.build());
-            // 请求相关基础配置
-            RequestConfig defaultRequestConfig = RequestConfig.custom()
-                    .setSocketTimeout(timeout).setConnectTimeout(timeout)
-                    .setConnectionRequestTimeout(timeout).build();
-            httpGet.setConfig(defaultRequestConfig);
-            // 执行请求
-            response = httpclient.execute(httpGet);
-            //有可能无响应
+            httpPost.setEntity(new StringEntity(param, contentType));
+            response = httpclient.execute(httpPost);
             if (response != null) {
                 if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                     if (responseCharset == null) {
@@ -91,8 +87,6 @@ public class HttpClientUtils {
                     resultString = EntityUtils.toString(response.getEntity(), responseCharset);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             try {
                 if (response != null) {
@@ -104,6 +98,68 @@ public class HttpClientUtils {
         }
         return resultString;
     }
+
+    /**
+     * GET请求处理
+     *
+     * @param url             请求url
+     * @param paramMap        请求参数
+     * @param timeout         超时时间
+     * @param responseCharset 响应内容编码，默认为UTF-8
+     * @param isHttps         是否为https
+     * @param fileName        https时选填 证书文件地址+名称，为空时绕过证书
+     * @param password        https时选填 证书秘钥，为空时绕过证书
+     * @return 请求结果
+     * @throws Exception exception
+     */
+    public static String doGet(String url, Map<String, String> paramMap, int timeout,
+                               Charset responseCharset, boolean isHttps, String fileName,
+                               String password) throws Exception {
+        String resultString = null;
+        CloseableHttpResponse response = null;
+        try (CloseableHttpClient httpclient = isHttps ? getHttpsClient(fileName, password) : HttpClients.createDefault()) {
+            URIBuilder builder = new URIBuilder(url);
+            if (paramMap != null) {
+                for (Map.Entry<String, String> elem : paramMap.entrySet()) {
+                    builder.addParameter(elem.getKey(), elem.getValue());
+                }
+            }
+            HttpGet httpGet = new HttpGet(builder.build());
+            setHttpConfig(httpGet, timeout);
+            response = httpclient.execute(httpGet);
+            if (response != null) {
+                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                    if (responseCharset == null) {
+                        responseCharset = StandardCharsets.UTF_8;
+                    }
+                    resultString = EntityUtils.toString(response.getEntity(), responseCharset);
+                }
+            }
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultString;
+    }
+
+    /**
+     * http基础配置
+     *
+     * @param httpRequestBase http请求
+     * @param timeout         超时时间
+     */
+    private static void setHttpConfig(HttpRequestBase httpRequestBase, int timeout) {
+        RequestConfig defaultRequestConfig = RequestConfig.custom()
+                .setSocketTimeout(timeout).setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout).build();
+        httpRequestBase.setConfig(defaultRequestConfig);
+    }
+
 
     /**
      * 获取一个HTTPS连接客户端 绕过SSL无参调用
