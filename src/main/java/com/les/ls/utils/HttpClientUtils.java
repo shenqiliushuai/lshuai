@@ -34,6 +34,20 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.util.Map;
 
+
+/**
+ * 自己写的封装，满足一下简单的场景，偶尔用下，若大量使用httpclient，使用下边的httpClientUtil工具包
+ * <p color="red">
+ * location : https://mvnrepository.com/artifact/com.arronlong/httpclientutil
+ *
+ * <dependency>
+ * <groupId>com.arronlong</groupId>
+ * <artifactId>httpclientutil</artifactId>
+ * <version>1.0.4</version>
+ * </dependency>
+ *
+ * </p>
+ */
 public class HttpClientUtils {
 
 
