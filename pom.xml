@@ -120,6 +120,16 @@
             <artifactId>httpclientutil</artifactId>
             <version>1.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.3.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>5.3.8</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -130,7 +140,7 @@
                 <configuration>
                     <excludes>
                         <exclude>
-                            <groupId>org.projectlombok</groupId>
+                            <groupId>org.project.lombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>

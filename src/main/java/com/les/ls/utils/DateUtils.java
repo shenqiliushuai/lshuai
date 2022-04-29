@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public class DateUtils {
 
-    private static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
-    private static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
+    public static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+    public static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
 
     public static void main(String[] args) {
         System.out.println(stringToDate("2022-01-15 17:53:10", yyyy_MM_dd_HH_mm_ss));
@@ -120,11 +120,12 @@ public class DateUtils {
     /**
      * 时间戳返回字符串
      *
-     * @param time long类型的time（单位：秒）
+     * @param time   long类型的time（单位：秒）
+     * @param format 格式
      * @return 格式化后的字符串（2019-01-01 00:00:00）
      */
-    public static String getFormatDate(Long time) {
-        SimpleDateFormat sdf = new SimpleDateFormat(yyyy_MM_dd_HH_mm_ss);
+    public static String getFormatDate(Long time, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(time);
     }
 

@@ -1,5 +1,7 @@
 package com.les.ls.pojo.dto;
 
+import lombok.Getter;
+
 /**
  * web请求结果枚举
  *
@@ -17,27 +19,16 @@ public enum WebResultEnum {
     /**
      * 响应码
      */
+    @Getter
     private final Integer code;
     /**
      * 响应消息
      */
+    @Getter
     private final String message;
 
     WebResultEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
-    }
-
-    WebResultEnum(String message){
-        this.code = 0;
-        this.message = message;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
     }
 }
