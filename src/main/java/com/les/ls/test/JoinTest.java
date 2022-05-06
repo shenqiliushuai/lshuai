@@ -1,4 +1,4 @@
-package com.les.ls.utils.Thread;
+package com.les.ls.test;
 
 import java.util.concurrent.TimeUnit;
 

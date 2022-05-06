@@ -1,4 +1,4 @@
-package com.les.ls.utils.Function;
+package com.les.ls.test;
 
 import java.util.function.Function;
 

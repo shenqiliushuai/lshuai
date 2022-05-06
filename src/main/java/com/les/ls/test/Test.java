@@ -1,4 +1,4 @@
-package com.les.ls.utils;
+package com.les.ls.test;
 
 
 public class Test {
