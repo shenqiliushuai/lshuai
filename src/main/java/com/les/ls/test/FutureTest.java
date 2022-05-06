@@ -21,20 +21,28 @@ public class FutureTest {
         TestInterface impl2 = new TestImpl2();
         list.add(impl1);
         list.add(impl2);
-        List<String> taskResult = new ArrayList<>();
+        List<Future<List<String>>> taskResult = new ArrayList<>();
         CountDownLatch downLatch = new CountDownLatch(list.size());
         for (TestInterface testInterface : list) {
             try {
-                List<String> listFuture = executorService.submit(new CustomThread(testInterface)).get();
-                taskResult.addAll(listFuture);
-            } catch (ExecutionException | InterruptedException e) {
-                System.out.println(e.getMessage());
+                Future<List<String>> listFuture = executorService.submit(new CustomThread(testInterface));
+                taskResult.add(listFuture);
+            } catch (Exception e) {
+                e.printStackTrace();
             } finally {
                 downLatch.countDown();
             }
         }
         downLatch.await();
-        taskResult.forEach(System.out::println);
+        for (Future<List<String>> future : taskResult) {
+            List<String> strings = null;
+            try {
+                strings = future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            strings.forEach(System.out::println);
+        }
         executorService.shutdownNow();
     }
 
