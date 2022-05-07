@@ -35,13 +35,12 @@ public class FutureTest {
         }
         downLatch.await();
         for (Future<List<String>> future : taskResult) {
-            List<String> strings = null;
             try {
-                strings = future.get();
+                List<String> strings = future.get();
+                strings.forEach(System.out::println);
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                System.out.println(e.getClass().getName());
             }
-            strings.forEach(System.out::println);
         }
         executorService.shutdownNow();
     }
@@ -105,7 +104,7 @@ class TestImpl2 implements TestInterface {
     public List<String> test() {
         List<String> list = new ArrayList<>();
         list.add(this.getClass().getName());
-        int a = 1 / 0;
+        //int a = 1 / 0;
         return list;
     }
 }
