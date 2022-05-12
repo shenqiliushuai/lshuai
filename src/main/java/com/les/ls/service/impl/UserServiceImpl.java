@@ -16,11 +16,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void login() {
+        //Transactional失效
         test();
     }
 
+
     @Transactional
-    public void test(){
+    public void test() {
         Organization organization = new Organization();
         organization.setOrgCode("demo");
         organization.setOrgName("demo");
