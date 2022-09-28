@@ -165,7 +165,18 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <!--将外部依赖jar打入包 <scope>system</scope>-->
+                    <includeSystemScope>true</includeSystemScope>
+                    <mainClass>com.les.ls.LsApplication</mainClass>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!--可以把依赖的包都打包到生成的Jar包中-->
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <!--mybatis代码生成插件-->

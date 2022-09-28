@@ -5,13 +5,10 @@ import com.arronlong.httpclientutil.common.HttpConfig;
 import com.les.ls.pojo.dto.WebResultEnum;
 import com.les.ls.pojo.vo.AbsSendMessageEntity;
 import com.les.ls.pojo.vo.BaseWebResultVO;
-import com.les.ls.utils.HttpClientUtils;
 import com.les.ls.utils.MD5Util;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +23,8 @@ public class TestController {
         Map<String, Object> headers = new HashMap<>();
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
-            String headerkey = headerNames.nextElement();
-            headers.put(headerkey, request.getHeader(headerkey));
+            String headerKey = headerNames.nextElement();
+            headers.put(headerKey, request.getHeader(headerKey));
         }
         result.put("请求头为：", headers);
         result.put("请求体为：", map);
