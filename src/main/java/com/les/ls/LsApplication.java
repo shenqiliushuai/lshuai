@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScans;
 
 @SpringBootApplication
 @MapperScan("com.les.ls.dao")
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
+//@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 @ComponentScans(value = {@ComponentScan("com.les.shengkai")})
 public class LsApplication {
 

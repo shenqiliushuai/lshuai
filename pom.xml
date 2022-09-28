@@ -17,17 +17,17 @@
         <java.version>1.8</java.version>
     </properties>
     <repositories>
-        <repository>
+        <!--<repository>
             <id>com.e-iceblue</id>
             <url>https://repo.e-iceblue.cn/repository/maven-public/</url>
-        </repository>
+        </repository>-->
     </repositories>
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>e-iceblue</groupId>
             <artifactId>spire.pdf</artifactId>
             <version>4.10.2</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
