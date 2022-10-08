@@ -5,6 +5,8 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.les.ls.utils.TerminalUtils;
+import com.les.shengkai.config.ExcelConfig;
+import com.les.shengkai.pojo.BankExcelModule;
 import com.les.shengkai.pojo.ShengKaiExcelExport;
 import com.les.shengkai.pojo.ShengkaiExcelImport;
 import com.les.shengkai.service.ShengKaiService;
@@ -13,6 +15,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.*;
@@ -20,6 +23,10 @@ import java.util.*;
 @Slf4j
 @Service
 public class ShengKaiServiceImpl implements ShengKaiService {
+
+    @Resource
+    private ExcelConfig excelConfig;
+
     @Override
     public void doExcelParser() {
         String workDir = TerminalUtils.getWorkDir();
@@ -102,4 +109,88 @@ public class ShengKaiServiceImpl implements ShengKaiService {
 
     }
 
+    @Override
+    public void bankParser() {
+        log.info("任务开始...");
+        String workDir = TerminalUtils.getWorkDir() + File.separator + "bank";
+        //String workDir = "C:\\Users\\Administrator\\Desktop";
+        File[] files = new File(workDir).listFiles();
+        if (files == null) {
+            log.warn("未检测到文件！路径->{}", workDir);
+            return;
+        }
+
+        ImportParams params = new ImportParams();
+        //设置表头的行数
+        params.setHeadRows(1);
+        params.setSheetNum(1);
+        params.setVerifyHandler(excelConfig);
+        List<BankExcelModule> allImportList = new ArrayList<>();
+        int j = 1;
+        for (File file : files) {
+            if (file.getName().endsWith(".xls") || file.getName().endsWith(".xlsx")) {
+                List<BankExcelModule> importList = ExcelImportUtil.importExcel(file, BankExcelModule.class, params);
+                BankExcelModule module = importList.get(0);
+                if (StringUtils.hasLength(module.getContent())) {
+                    for (BankExcelModule bankExcelImport : importList) {
+                        bankExcelImport.setNo(j + "");
+                        j++;
+                        bankExcelImport.setHuming(StringUtils.replace(bankExcelImport.getHuming(), " ", ""));
+                        if (bankExcelImport.getAmount() == null || bankExcelImport.getAmount() == 0) {
+                            continue;
+                        }
+
+                        if (!StringUtils.hasLength(bankExcelImport.getType())
+                                && !StringUtils.hasLength(bankExcelImport.getBankName())
+                                && !StringUtils.hasLength(bankExcelImport.getBankNumber())) {
+                            bankExcelImport.setType("0");
+                            bankExcelImport.setBankName("建设银行南召支行");
+                            bankExcelImport.setBankNumber("105513300017");
+                            allImportList.add(bankExcelImport);
+                            continue;
+                        }
+
+                        if (bankExcelImport.getType() != null) {
+                            int type;
+                            try {
+                                type = Integer.parseInt(bankExcelImport.getType());
+                            } catch (Exception e) {
+                                log.warn("数值转换失败！type->{}", bankExcelImport.getType());
+                                continue;
+                            }
+                            if (type == 0) {
+                                bankExcelImport.setBankName("建设银行南召支行");
+                                bankExcelImport.setBankNumber("105513300017");
+                                allImportList.add(bankExcelImport);
+                                continue;
+                            }
+                        }
+                        allImportList.add(bankExcelImport);
+                    }
+                } else {
+                    log.error("未读取到摘要！file->{}", file.getName());
+                }
+            } else {
+
+                log.warn("已跳过文件{}", file.getName());
+            }
+        }
+        log.info("共读取{}行，开始导出...", allImportList.size());
+
+        File saveFile = new File(workDir + File.separator + "bank" + File.separator + "export");
+        if (!saveFile.exists()) {
+            if (!saveFile.mkdirs()) {
+                log.warn("目录创建失败！dir->{}", saveFile.getPath());
+            }
+        }
+        try (FileOutputStream fos = new FileOutputStream(saveFile + File.separator + "bank.xlsx")) {
+            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(null, null),
+                    BankExcelModule.class, allImportList);
+            workbook.write(fos);
+            workbook.close();
+        } catch (Exception e) {
+            log.error("导出异常！msg->{}", e.getMessage());
+        }
+        log.info("任务结束...");
+    }
 }

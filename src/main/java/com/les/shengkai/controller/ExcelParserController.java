@@ -22,4 +22,10 @@ public class ExcelParserController {
         shengKaiService.doExcelParser();
         return "处理成功！";
     }
+
+    @GetMapping("/bankParser")
+    public String bankParser() {
+        shengKaiService.bankParser();
+        return "处理成功！";
+    }
 }
