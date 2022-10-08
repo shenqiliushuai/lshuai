@@ -1,0 +1,6 @@
+spring:
+  ##SpringBoot 2.4之后使用此方式定义环境配置
+  config:
+    activate:
+      on-profile:
+        - prod
