@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SendMessageTest</title>
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: auto;
+        }
+
+        #global {
+            padding-top: 200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div id="global">
+    <div id="center">
+        <div class="easyui-panel" title="推送测试" style="width:400px;">
+            <div style="padding:10px 60px 20px 60px">
+                <form id="form">
+                    <table>
+                        <tr>
+                            <td>渠道：</td>
+                            <td>
+                                <label>
+                                    <select size="4" class="easyui-combobox" data-options="required:true"
+                                            name="channelId" style="width: 173px;" prompt="渠道ID">
+                                        <option value="2">华为</option>
+                                        <option value="3">小米</option>
+                                        <option value="4">vivo</option>
+                                        <option value="5">oppo</option>
+                                    </select>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>appId:</td>
+                            <td><input id="appId" class="easyui-textbox" type="text" name="appId"
+                                       data-options="required:true" prompt="推送应用ID"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>packageId:</td>
+                            <td><input id="packageId" class="easyui-textbox" type="text" name="packageId"
+                                       data-options="required:true" prompt="包ID"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>accountList:</td>
+                            <td><input id="accountList" class="easyui-textbox" type="text" name="accountList"
+                                       data-options="required:true" prompt="第三方用户id，多个英文逗号隔开"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>title:</td>
+                            <td><input id="title" class="easyui-textbox" name="title"
+                                       data-options="required:true" prompt="消息标题">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>message:</td>
+                            <td><input id="message" class="easyui-textbox" name="message"
+                                       data-options="required:true" prompt="消息体"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>exInfo:</td>
+                            <td><input class="easyui-textbox" name="exInfo" prompt="额外参数（可为空）"/>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div style="text-align:center;padding:5px">
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">提交</a>
+                    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清除内容</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="application/javascript">
+    function submitForm() {
+        var accountList = $("#accountList").textbox("getValue");
+        var appId = $("#appId").textbox("getValue");
+        var message = $("#message").textbox("getValue");
+        var packageId = $("#packageId").textbox("getValue");
+        var title = $("#title").textbox("getValue");
+        var signStr = accountList + appId + message + packageId + title + "66ad33c4e31b2434c2c089ef0d04af53";
+        $.ajax({
+            url: "http://10.10.19.33:8080/demo/test/sendMessage",
+            type: "post",
+            data: $("#form").serialize() +"&sign=" + md5(signStr),
+            success: function (data) {
+                $.messager.alert('服务返回', JSON.stringify(data));
+            },
+            error: function (data) {
+                $.messager.alert('服务返回', JSON.stringify(data));
+            }
+        })
+    }
+
+    function clearForm() {
+        $('#form').form('clear');
+    }
+
+    $('.easyui-combobox').combobox({
+        editable: false,
+        panelHeight: 'auto',
+        onChange: function () {
+            var value = $(".easyui-combobox").combobox('getValue');
+            var text = $(".easyui-combobox").combobox('getText');
+            $("#appId").textbox('setValue', "60051");
+            switch (value) {
+                case "2":
+                    $("#packageId").textbox("setValue", "1474");
+                    break;
+                case "3":
+                    $("#packageId").textbox("setValue", "1475");
+                    break;
+                case "4":
+                    $("#packageId").textbox("setValue", "1477");
+                    break;
+                case "5":
+                    $("#packageId").textbox("setValue", "1476");
+                    break;
+            }
+            $("#title").textbox("setValue", text + "测试消息-title");
+            $("#message").textbox("setValue", text + "测试消息-message");
+            $("#accountList").textbox("setValue", "1,2,3");
+        }
+
+    });
+
+</script>
+</body>
+</html>

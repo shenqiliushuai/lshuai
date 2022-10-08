@@ -1,9 +1,12 @@
 package com.les.ls.utils;
 
+/*
 import com.spire.pdf.PdfDocument;
 import com.spire.pdf.utilities.PdfTable;
 import com.spire.pdf.utilities.PdfTableExtractor;
+*/
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +15,11 @@ import java.util.List;
  *
  * @author lshuai
  */
+@Deprecated
 public class PDFParser {
     public static String pdfFileName;
 
-    public static List<String> readPdfTableToList() {
+    /*public static List<String> readPdfTableToList() {
         List<String> list = new ArrayList<>();
         PdfDocument pdf = new PdfDocument(pdfFileName);
         PdfTableExtractor extractor = new PdfTableExtractor(pdf);
@@ -38,11 +42,11 @@ public class PDFParser {
             }
         }
         return list;
-    }
+    }*/
 
     public static void main(String[] args) {
-        pdfFileName = "C:\\Users\\lenovo\\Desktop\\33333101401210826100001.pdf";
+        /*pdfFileName = "C:\\Users\\lenovo\\Desktop\\33333101401210826100001.pdf";
         List<String> list = readPdfTableToList();
-        list.forEach(System.out::println);
+        list.forEach(System.out::println);*/
     }
 }

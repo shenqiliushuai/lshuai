@@ -2,17 +2,22 @@ package com.les.ls;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
+import org.springframework.core.env.Environment;
 
-@SpringBootApplication
+import javax.annotation.Resource;
+
 @MapperScan("com.les.ls.dao")
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
-@ComponentScans(value = {@ComponentScan("com.les.shengkai")})
+@ComponentScan(basePackages = {"com.les.shengkai", "com.les.ls", "com.les.yjhui"})
+//@SpringBootApplication()
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class LsApplication {
+
+
+    @Resource
+    private Environment env;
 
     public static void main(String[] args) {
         SpringApplication.run(LsApplication.class, args);
