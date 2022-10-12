@@ -3,7 +3,10 @@ package com.les.ls.utils;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * 日期工具类
@@ -16,8 +19,28 @@ public class DateUtils {
     public static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
 
     public static void main(String[] args) {
-        System.out.println(stringToDate("2022-01-15 17:53:10", yyyy_MM_dd_HH_mm_ss));
-        System.out.println(dateToString(new Date(), yyyy_MM_dd_HH_mm_ss));
+        System.out.println(TimeZone.getDefault().getID());
+        System.out.println(checkDateScope(10, System.currentTimeMillis() / 1000));
+    }
+
+    /**
+     * 判断指定时间是否在当前时间的一个范围区间内
+     *
+     * @param segment 时间区间左右偏移量，单位分钟。
+     */
+    public static boolean checkDateScope(int segment, Long timeStamp) {
+        Instant now = Instant.now(Clock.systemDefaultZone());
+        long start = now.minus(segment, ChronoUnit.MINUTES).getEpochSecond();
+        long end = now.plus(segment, ChronoUnit.MINUTES).getEpochSecond();
+        return timeStamp > start && timeStamp < end;
+    }
+
+    /**
+     * 时间戳转date，单位秒
+     */
+    public static Date getDate(long timeStamp) {
+        Instant instant = Instant.ofEpochSecond(timeStamp);
+        return Date.from(instant.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     /**
