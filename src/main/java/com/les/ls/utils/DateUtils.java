@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -20,7 +19,20 @@ public class DateUtils {
 
     public static void main(String[] args) {
         System.out.println(TimeZone.getDefault().getID());
-        System.out.println(checkDateScope(10, System.currentTimeMillis() / 1000));
+        System.out.println(checkDateScope(10L, System.currentTimeMillis() / 1000));
+
+        System.out.println(timeStampToDateStr(1665719363L));
+    }
+
+    /**
+     * 时间戳转时间
+     *
+     * @return
+     */
+    public static String timeStampToDateStr(Long timeStamp) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(yyyy_MM_dd_HH_mm_ss);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timeStamp), ZoneId.systemDefault());
+        return localDateTime.format(dateTimeFormatter);
     }
 
     /**
@@ -28,7 +40,7 @@ public class DateUtils {
      *
      * @param segment 时间区间左右偏移量，单位分钟。
      */
-    public static boolean checkDateScope(int segment, Long timeStamp) {
+    public static boolean checkDateScope(Long segment, Long timeStamp) {
         Instant now = Instant.now(Clock.systemDefaultZone());
         long start = now.minus(segment, ChronoUnit.MINUTES).getEpochSecond();
         long end = now.plus(segment, ChronoUnit.MINUTES).getEpochSecond();

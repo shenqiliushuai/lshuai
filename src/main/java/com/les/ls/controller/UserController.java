@@ -6,8 +6,11 @@ import com.les.ls.service.UserService;
 import com.les.ls.utils.TerminalUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 
 /**
@@ -33,4 +36,10 @@ public class UserController extends BaseController {
         file.transferTo(new File(TerminalUtils.getWorkDir()));
     }
 
+
+    @GetMapping("/test")
+    public ModelAndView test(HttpServletResponse response) throws Exception {
+        response.sendRedirect("https://www.baidu.com");
+        return new ModelAndView(new RedirectView("https://www.baidu.com"));
+    }
 }
