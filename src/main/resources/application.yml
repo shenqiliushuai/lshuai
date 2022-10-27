@@ -3,7 +3,8 @@ spring:
     active: test
 server:
   port: 8080
-  servlet:
-    context-path: /demo
+# 个人站点：23.94.43.95，注掉demo
+#  servlet:
+#    context-path: /demo
 mybatis:
   mapper-locations: classpath:mapper/*
