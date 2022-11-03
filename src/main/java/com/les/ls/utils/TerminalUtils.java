@@ -3,7 +3,11 @@ package com.les.ls.utils;
 import org.springframework.util.StringUtils;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -24,8 +28,13 @@ public class TerminalUtils {
 
     private static final long TIMEOUT = 10;
 
+    public static String getOSName() {
+        return System.getProperty("os.name").toLowerCase();
+    }
+
     /**
      * 获取工作目录
+     *
      * @return 工作目录路径
      */
     public static String getWorkDir() {
@@ -45,6 +54,41 @@ public class TerminalUtils {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * windows平台下执行 cmd指令
+     *
+     * @param command cmd指令
+     * @return 命令执行结果
+     */
+    public static String execCommand(String command) {
+        String result = "";
+        try {
+            List<String> cmdList = new ArrayList<>();
+            cmdList.add("cmd.exe");
+            cmdList.add("/c");
+            cmdList.add(command);
+            ProcessBuilder builder = new ProcessBuilder(cmdList);
+            // 重定向错误输出
+            builder.redirectErrorStream(true);
+            Process process = builder.start();
+            result = getStreamStr(process.getInputStream());
+            // 等待进程对象执行完成，并返回 退出值，0 为正常，其他为异常
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static String getStreamStr(InputStream is) throws IOException {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, Charset.forName("GBK")))) {
+            return br.lines().collect(Collectors.joining());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     /**

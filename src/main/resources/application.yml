@@ -8,3 +8,10 @@ server:
 #    context-path: /demo
 mybatis:
   mapper-locations: classpath:mapper/*
+custom:
+  windowsRestartTaskName: lshuaiApplication
+  windowsRestartScriptName: E:\lshuai\lshuai\src\main\resources\script\start.bat
+  windowsSystemPassword: a123456!
+  linuxRestartScriptName: /data/lshuai/restart.sh
+  windowsCheckCmdForService: C:\Users\les.liu\Desktop\个人资料\lshuai\
+  windowsRestartCmdForService:

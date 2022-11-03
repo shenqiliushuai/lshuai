@@ -5,7 +5,6 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * 日期工具类
@@ -14,14 +13,23 @@ import java.util.TimeZone;
  */
 public class DateUtils {
 
-    public static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+    public static final String yyyy_MM_dd_HH_mm_ss1 = "yyyy-MM-dd HH:mm:ss";
     public static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";
+    public static final String yyyy_MM_dd_HH_mm_ss2 = "yyyy/MM/dd HH:mm:ss";
 
     public static void main(String[] args) {
-        System.out.println(TimeZone.getDefault().getID());
-        System.out.println(checkDateScope(10L, System.currentTimeMillis() / 1000));
+        System.out.println(getFutureDateTime(120L, yyyy_MM_dd_HH_mm_ss2));
+    }
 
-        System.out.println(timeStampToDateStr(1665719363L));
+    /**
+     * 当前时间加指定时间后的时间
+     */
+    public static String getFutureDateTime(Long segment, String formatStr) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(formatStr);
+        Instant instant = Instant.now();
+        instant = instant.plus(segment, ChronoUnit.SECONDS);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        return localDateTime.format(dateTimeFormatter);
     }
 
     /**
@@ -30,7 +38,7 @@ public class DateUtils {
      * @return
      */
     public static String timeStampToDateStr(Long timeStamp) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(yyyy_MM_dd_HH_mm_ss);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(yyyy_MM_dd_HH_mm_ss1);
         LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(timeStamp), ZoneId.systemDefault());
         return localDateTime.format(dateTimeFormatter);
     }
@@ -147,7 +155,7 @@ public class DateUtils {
         StringBuilder stringBuilder = new StringBuilder(time);
         stringBuilder.insert(6, "-");
         stringBuilder.insert(4, "-");
-        DateTimeFormatter ftf = DateTimeFormatter.ofPattern(yyyy_MM_dd_HH_mm_ss);
+        DateTimeFormatter ftf = DateTimeFormatter.ofPattern(yyyy_MM_dd_HH_mm_ss1);
         LocalDateTime parse = LocalDateTime.parse(stringBuilder.append(" 00:00:00").toString(), ftf);
         return LocalDateTime.from(parse).atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
     }
@@ -168,20 +176,20 @@ public class DateUtils {
      * 获取今天23:59:59的时间戳（单位:s）
      */
     public static long getTodayLastTimestamp() {
-        return maxDateTimeOfTimestamp(getNewTime());
+        return maxDateTimeOfTimestamp(getNowTimestamp());
     }
 
     /**
      * 获取今天00:00:00的时间戳（单位:s）
      */
     public static long getTodayFirstTimestamp() {
-        return minDateTimeOfTimestamp(getNewTime());
+        return minDateTimeOfTimestamp(getNowTimestamp());
     }
 
     /**
      * 获取当前时间戳（单位:s）
      */
-    public static Long getNewTime() {
-        return System.currentTimeMillis() / 1000;
+    public static Long getNowTimestamp() {
+        return Instant.now().getEpochSecond();
     }
 }

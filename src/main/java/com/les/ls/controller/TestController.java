@@ -6,6 +6,7 @@ import com.les.ls.pojo.dto.WebResultEnum;
 import com.les.ls.pojo.vo.AbsSendMessageEntity;
 import com.les.ls.pojo.vo.BaseWebResultVO;
 import com.les.ls.utils.MD5Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +14,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/test")
-@CrossOrigin
 public class TestController {
+
     @PostMapping("/detail")
     public BaseWebResultVO refund(@RequestBody(required = false) Map<String, Object> map, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();

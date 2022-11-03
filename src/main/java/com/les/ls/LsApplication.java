@@ -3,6 +3,7 @@ package com.les.ls;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
@@ -11,6 +12,7 @@ import javax.annotation.Resource;
 @MapperScan("com.les.ls.dao")
 @ComponentScan(basePackages = {"com.les.shengkai", "com.les.ls", "com.les.yjhui"})
 @SpringBootApplication
+@EnableConfigurationProperties
 public class LsApplication {
 
     /**

@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "custom.windowsRestartTaskName",
+      "type": "java.lang.String",
+      "description": "windows平台重启web服务执行schtasks指令使用的任务名称"
+    },
+    {
+      "name": "custom.windowsRestartScriptName",
+      "type": "java.lang.String",
+      "description": "windows平台重启web服务执行schtasks指令任务执行的重启脚本"
+    },
+    {
+      "name": "custom.windowsSystemPassword",
+      "type": "java.lang.String",
+      "description": "windows平台具有当前web服务执行权限并且具有schtasks指令执行权限的用户密码，为启动当前服务的用户密码"
+    },
+    {
+      "name": "custom.linuxRestartScriptName",
+      "type": "java.lang.String",
+      "description": "linux平台执行重启的脚本"
+    },
+    {
+      "name": "custom.windowsCheckCmdForService",
+      "type": "java.lang.String",
+      "description": "windows平台检查服务是否存在的指令"
+    }
+  ]
+}
