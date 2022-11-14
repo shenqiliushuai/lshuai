@@ -2,7 +2,7 @@ spring:
   profiles:
     active: test
 server:
-  port: 8080
+  port: 9999
 # 个人站点：23.94.43.95，注掉demo
 #  servlet:
 #    context-path: /demo
@@ -14,4 +14,4 @@ custom:
   windowsSystemPassword: a123456!
   linuxRestartScriptName: /data/lshuai/restart.sh
   windowsCheckCmdForService: C:\Users\les.liu\Desktop\个人资料\lshuai\
-  windowsRestartCmdForService:
+  windowsRestartCmdForService: winsc restart lshuai

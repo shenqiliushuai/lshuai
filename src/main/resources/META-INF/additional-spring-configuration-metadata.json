@@ -24,6 +24,11 @@
       "name": "custom.windowsCheckCmdForService",
       "type": "java.lang.String",
       "description": "windows平台检查服务是否存在的指令"
+    },
+    {
+      "name": "custom.windowsRestartCmdForService",
+      "type": "java.lang.String",
+      "description": "windows平台重启服务指令"
     }
   ]
 }

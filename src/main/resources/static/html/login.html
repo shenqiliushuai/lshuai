@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <script type="text/javascript" src="../easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: auto;
+        }
+
+        #global {
+            padding-top: 20%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div id="global">
+    <div class="easyui-panel" title="Login to Lshuai" style="width:400px;padding:30px 70px 20px 70px">
+        <form id="form">
+            <div style="margin-bottom:10px">
+                <input id="username" class="easyui-textbox" style="width:100%;height:40px;padding:12px"
+                       data-options="required:true,iconCls:'icon-man',iconWidth:38"
+                       name="username">
+            </div>
+            <div style="margin-bottom:20px">
+                <input id="password" class="easyui-textbox" type="password" style="width:100%;height:40px;padding:12px"
+                       data-options="required:true,iconCls:'icon-lock',iconWidth:38"
+                       name="password">
+            </div>
+            <div onclick="submitForm()">
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
+                   style="padding:5px 0px;width:100%;">
+                    <span style="font-size:14px;">Login</span>
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    function submitForm() {
+        var username = $("#username").textbox("getValue");
+        var password = $("#password").textbox("getValue");
+        if (username === null || username === "" || password === null || password === "") {
+            $.messager.alert('结果', "非法输入！");
+        } else {
+            $.ajax({
+                url: "http://localhost:9999/login",
+                type: "post",
+                data: $("#form").serialize(),
+                success: function (data) {
+                    sessionStorage.setItem("token", data)
+                    window.location.href = "http://localhost:9999/html/index.html";
+                },
+                error: function (data) {
+                    $.messager.alert('结果', JSON.stringify(data));
+                }
+            })
+        }
+    }
+</script>
+</html>
