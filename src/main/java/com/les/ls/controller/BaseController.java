@@ -4,6 +4,7 @@ import com.les.ls.pojo.dto.WebResultEnum;
 import com.les.ls.pojo.vo.BaseWebResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @Slf4j
 @ControllerAdvice
+@CrossOrigin
 public class BaseController {
 
     /**
