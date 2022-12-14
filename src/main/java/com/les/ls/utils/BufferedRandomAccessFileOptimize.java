@@ -229,15 +229,22 @@ public class BufferedRandomAccessFileOptimize extends RandomAccessFile {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        //大文件读写使用边读边写的方式，使用此随机读写方式效率提升大
+        String fileName = "C:\\Users\\les.liu\\Downloads\\ChromeSetup.exe";
+        String testFileName1 = fileName + ".optimize.1";
+        String testFileName2 = fileName + ".optimize.2";
         Instant readStart = Instant.now();
         long fileLength = 0;
         List<byte[]> list = new ArrayList<>();
         try (BufferedRandomAccessFileOptimize bufferedRandomAccessFileOptimize =
-                     new BufferedRandomAccessFileOptimize("I:\\SoapUI-5.4.0.zip", R, BUFFER_BIT_LENGTH_1024)) {
+                     new BufferedRandomAccessFileOptimize(fileName, R, BUFFER_BIT_LENGTH_1024)) {
             fileLength = bufferedRandomAccessFileOptimize.initFileLength;
             byte[] bytes = new byte[BUFFER_BIT_LENGTH_1024];
-            while (bufferedRandomAccessFileOptimize.read(bytes) != -1) {
-                list.add(bytes);
+            int readcount;
+            while ((readcount = bufferedRandomAccessFileOptimize.read(bytes)) != -1) {
+                byte[] newBytes = new byte[BUFFER_BIT_LENGTH_1024];
+                System.arraycopy(bytes, 0, newBytes, 0, readcount);
+                list.add(newBytes);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -249,7 +256,7 @@ public class BufferedRandomAccessFileOptimize extends RandomAccessFile {
 
         Instant writeStart = Instant.now();
         try (BufferedRandomAccessFileOptimize bufferedRandomAccessFileOptimize =
-                     new BufferedRandomAccessFileOptimize("I:\\SoapUI-5.4.0.zip.optimize.1", RW, BUFFER_BIT_LENGTH_1024)) {
+                     new BufferedRandomAccessFileOptimize(testFileName1, RW, BUFFER_BIT_LENGTH_1024)) {
             for (byte[] bytes : list) {
                 bufferedRandomAccessFileOptimize.write(bytes);
             }
@@ -263,9 +270,9 @@ public class BufferedRandomAccessFileOptimize extends RandomAccessFile {
 
         Instant readWriteStart = Instant.now();
         try (BufferedRandomAccessFileOptimize readObject =
-                     new BufferedRandomAccessFileOptimize("I:\\SoapUI-5.4.0.zip", R, BUFFER_BIT_LENGTH_1024);
+                     new BufferedRandomAccessFileOptimize(fileName, R, BUFFER_BIT_LENGTH_1024);
              BufferedRandomAccessFileOptimize writeObject =
-                     new BufferedRandomAccessFileOptimize("I:\\SoapUI-5.4.0.zip.optimize.2", RW, BUFFER_BIT_LENGTH_1024)) {
+                     new BufferedRandomAccessFileOptimize(testFileName2, RW, BUFFER_BIT_LENGTH_1024)) {
             fileLength = readObject.initFileLength;
             int readcount;
             byte[] bytes = new byte[BUFFER_BIT_LENGTH_1024];
