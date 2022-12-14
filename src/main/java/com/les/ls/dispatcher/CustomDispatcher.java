@@ -19,6 +19,7 @@ import java.util.Map;
 @Slf4j
 @Component
 public class CustomDispatcher<P extends ParamRule, R> {
+
     @Resource
     private ApplicationContext applicationContext;
 
@@ -47,6 +48,7 @@ public class CustomDispatcher<P extends ParamRule, R> {
 
     private void initCustomHandler() {
         try {
+            handlers.clear();
             log.info("--------------------   Init CustomHandler.handler   --------------------");
             //从容器中获得加了该注解的bean
             for (String beanName : applicationContext.getBeanNamesForAnnotation(CustomAnnotation.class)) {
@@ -54,14 +56,8 @@ public class CustomDispatcher<P extends ParamRule, R> {
                 CustomHandler<P, R> customHandler = (CustomHandler<P, R>) applicationContext.getBean(beanName);
                 CustomAnnotation customAnnotation = customHandler.getClass().getAnnotation(CustomAnnotation.class);
                 String key = getKey(customAnnotation.name(), customAnnotation.test().name());
-                //handler已经注册了
-                if (handlers.containsKey(key)) {
-                    String error = "Init CustomHandler error handler is repetition !";
-                    throw new InterruptedException(error);
-                } else {
-                    //注册handler
-                    handlers.put(key, customHandler);
-                }
+                //注册handler
+                handlers.put(key, customHandler);
             }
             log.info("--------------------   Init  CustomHandler.handler complete !   --------------------");
         } catch (Exception e) {
