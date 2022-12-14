@@ -243,7 +243,7 @@ public class BufferedRandomAccessFileOptimize extends RandomAccessFile {
             e.printStackTrace();
         }
         Instant readEnd = Instant.now();
-        System.out.println(String.format("file size %s (byte) read speed %s ms ...", fileLength, Duration.between(readStart, readEnd).toMillis()));
+        System.out.printf("file size %s (byte) read speed %s ms ...%n", fileLength, Duration.between(readStart, readEnd).toMillis());
 
         Thread.sleep(5000);
 
@@ -257,7 +257,7 @@ public class BufferedRandomAccessFileOptimize extends RandomAccessFile {
             e.printStackTrace();
         }
         Instant writeEnd = Instant.now();
-        System.out.println(String.format("file size %s (byte) write speed %s ms ...", fileLength, Duration.between(writeStart, writeEnd).toMillis()));
+        System.out.printf("file size %s (byte) write speed %s ms ...%n", fileLength, Duration.between(writeStart, writeEnd).toMillis());
 
         Thread.sleep(5000);
 
@@ -276,6 +276,6 @@ public class BufferedRandomAccessFileOptimize extends RandomAccessFile {
             e.printStackTrace();
         }
         Instant readWriteEnd = Instant.now();
-        System.out.println(String.format("file size %s (byte) read and write speed %s ms ...", fileLength, Duration.between(readWriteStart, readWriteEnd).toMillis()));
+        System.out.printf("file size %s (byte) read and write speed %s ms ...%n", fileLength, Duration.between(readWriteStart, readWriteEnd).toMillis());
     }
 }
