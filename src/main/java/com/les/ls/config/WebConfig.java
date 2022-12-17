@@ -52,7 +52,8 @@ public class WebConfig implements WebMvcConfigurer {
                 // 是否发送Cookie
                 .allowCredentials(true)
                 // 放行哪些原始域
-                .allowedOrigins("*")
+                //.allowedOrigins("*")
+                .allowedOriginPatterns("*")
                 // 放行哪些请求方式
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTION")
                 // 放行哪些原始请求头部信息
