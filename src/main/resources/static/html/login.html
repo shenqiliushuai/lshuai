@@ -43,7 +43,7 @@
                 type: "post",
                 data: $("#form").serialize(),
                 success: function (data) {
-                    sessionStorage.setItem("token", data)
+                    sessionStorage.setItem("token", encodeURIComponent(data));
                     window.location.href = "http://23.94.43.95:9999/html/index.html";
                 },
                 error: function (data) {
