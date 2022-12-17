@@ -36,7 +36,7 @@
         var username = $("#username").val();
         var password = $("#password").val();
         if (username === null || username === "" || password === null || password === "") {
-            $.messager.alert('结果', "非法输入！");
+            alert("非法输入！");
         } else {
             $.ajax({
                 url: "http://23.94.43.95:9999/login",
