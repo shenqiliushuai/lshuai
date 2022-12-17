@@ -1,4 +1,4 @@
-package com.les.ls;
+package com.les.ls.utils;
 
 import de.odysseus.staxon.json.JsonXMLConfig;
 import de.odysseus.staxon.json.JsonXMLConfigBuilder;

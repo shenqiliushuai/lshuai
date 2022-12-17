@@ -3,64 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="../easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="../easyui/themes/icon.css">
+    <link rel="stylesheet" href="../css/LoginStyle.css" media="screen" type="text/css"/>
     <script type="text/javascript" src="../easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="../easyui/jquery.easyui.min.js"></script>
+    <script src="../js/modernizr.js"></script>
     <style>
-        * {
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
             padding: 0;
-            margin: auto;
+            margin: 0;
+            z-index: 1;
         }
-
-        #global {
-            padding-top: 20%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        canvas {
+            position:absolute;
+            z-index:-2;
         }
     </style>
 </head>
 <body>
-<div id="global">
-    <div class="easyui-panel" title="Login to Lshuai" style="width:400px;padding:30px 70px 20px 70px">
-        <form id="form">
-            <div style="margin-bottom:10px">
-                <input id="username" class="easyui-textbox" style="width:100%;height:40px;padding:12px"
-                       data-options="required:true,iconCls:'icon-man',iconWidth:38"
-                       name="username">
-            </div>
-            <div style="margin-bottom:20px">
-                <input id="password" class="easyui-textbox" type="password" style="width:100%;height:40px;padding:12px"
-                       data-options="required:true,iconCls:'icon-lock',iconWidth:38"
-                       name="password">
-            </div>
-            <div onclick="submitForm()">
-                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'"
-                   style="padding:5px 0px;width:100%;">
-                    <span style="font-size:14px;">Login</span>
-                </a>
-            </div>
-        </form>
-    </div>
-</div>
-</body>
-<script type="text/javascript">
+<canvas id="canvas"></canvas>
+<form>
+    <input id="username" name="username" placeholder="username" class="name" required/>
+    <input id="password" name="password" placeholder="password" class="password" type="password" required/>
+    <input class="btn" type="button" value="Login" onclick="submitForm()"/>
+</form>
 
+</body>
+</html>
+<script type="text/javascript">
     function submitForm() {
-        var username = $("#username").textbox("getValue");
-        var password = $("#password").textbox("getValue");
+        var username = $("#username").val();
+        var password = $("#password").val();
         if (username === null || username === "" || password === null || password === "") {
             $.messager.alert('结果', "非法输入！");
         } else {
             $.ajax({
-                url: "http://localhost:9999/login",
+                url: "http://23.94.43.95:9999/login",
                 type: "post",
                 data: $("#form").serialize(),
                 success: function (data) {
                     sessionStorage.setItem("token", data)
-                    window.location.href = "http://localhost:9999/html/index.html";
+                    window.location.href = "http://23.94.43.95:9999/html/index.html";
                 },
                 error: function (data) {
                     $.messager.alert('结果', JSON.stringify(data));
@@ -69,4 +53,49 @@
         }
     }
 </script>
-</html>
+
+<!--代码雨-->
+<script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext('2d');
+    var flag = true;
+    window.addEventListener('resize', function () {
+        if(flag === true){
+            flag = false;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            setTimeout(function () {
+                codeRain();
+            }, 1000);
+        }
+    })
+    window.onload = codeRain();
+
+    function codeRain() {
+        var width, height;
+        canvas.width = width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        canvas.height = height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        var num = Math.ceil(width / 10);
+        var y = Array(num).join(0).split('');
+        var draw = function () {
+            ctx.fillStyle = 'rgba(0,0,0,.05)'; //核心代码，创建黑色背景，透明度为0.05的填充色。
+            ctx.fillRect(0, 0, width, height);
+            ctx.fillStyle = '#0f0'; //设置了字体颜色为绿色
+            ctx.font = '18px';//设置字体大小与family
+            for (i = 0; i < num; i++) {
+                var x = (i * 10) + 10;
+                text = Math.random() > 0.5 ? Math.floor((Math.random() * 10)) : String.fromCharCode(65 + Math.random() * 62);
+                var y1 = y[i];
+                ctx.fillText(text, x, y1);
+                if (y1 > Math.random() * 10 * height) {
+                    y[i] = 0;
+                } else {
+                    y[i] = parseInt(y[i]) + 10;
+                }
+            }
+        };
+        (function () {
+            setInterval(draw, 50);
+        })();
+        flag = true;
+    }
+</script>
