@@ -15,9 +15,10 @@
             margin: 0;
             z-index: 1;
         }
+
         canvas {
-            position:absolute;
-            z-index:-2;
+            position: absolute;
+            z-index: -2;
         }
     </style>
 </head>
@@ -39,12 +40,16 @@
             alert("非法输入！");
         } else {
             $.ajax({
-                url: "http://23.94.43.95:9999/login",
+                url: baseUrl + "/login",
                 type: "post",
                 data: $("#form").serialize(),
                 success: function (data) {
-                    sessionStorage.setItem("token", encodeURIComponent(data));
-                    window.location.href = "http://23.94.43.95:9999/html/index.html";
+                    if (data.code === 0) {
+                        sessionStorage.setItem("token", encodeURIComponent(data.data));
+                        window.location.href = baseUrl + "/html/index.html";
+                    } else {
+                        alert(data.data);
+                    }
                 },
                 error: function (data) {
                     alert(JSON.stringify(data));
@@ -60,7 +65,7 @@
     var ctx = canvas.getContext('2d');
     var flag = true;
     window.addEventListener('resize', function () {
-        if(flag === true){
+        if (flag === true) {
             flag = false;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             setTimeout(function () {

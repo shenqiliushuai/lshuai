@@ -1,38 +1,30 @@
 package com.les.ls.service.impl;
 
-import com.les.ls.dao.OrganizationMapper;
-import com.les.ls.pojo.Organization;
-import com.les.ls.service.UserService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.UUID;
+import com.les.ls.dao.UserMapper;
+import com.les.ls.pojo.User;
+import com.les.ls.pojo.dto.WebResultEnum;
+import com.les.ls.pojo.vo.BaseWebResultVO;
+import com.les.ls.pojo.vo.LoginVO;
+import com.les.ls.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Resource
-    private OrganizationMapper organizationMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
-    public void login() {
-        //Transactional失效
-        test();
-    }
-
-
-    @Transactional
-    public void test() {
-        Organization organization = new Organization();
-        organization.setOrgCode("demo");
-        organization.setOrgName("demo");
-        organization.setIsVirtual("1");
-        organization.setPid(null);
-        organizationMapper.insertSelective(organization);
-        organization.setOrgCode("demo");
-        organization.setOrgName("demo");
-        organization.setIsVirtual("1");
-        organization.setPid(null);
-        organizationMapper.insertSelective(organization);
+    public BaseWebResultVO login(LoginVO loginVO) {
+        User queryUser = Convert.convert(User.class, loginVO);
+        User user = userMapper.queryUser(queryUser);
+        if (user != null) {
+            return new BaseWebResultVO(WebResultEnum.SUCCESS, UUID.randomUUID().toString());
+        }
+        return new BaseWebResultVO(WebResultEnum.FAILED, "user not exist !");
     }
 }

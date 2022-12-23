@@ -1,5 +1,9 @@
 package com.les.ls.service;
 
+import com.les.ls.pojo.vo.BaseWebResultVO;
+import com.les.ls.pojo.vo.LoginVO;
+
 public interface UserService {
-    void login();
+
+    BaseWebResultVO login(LoginVO loginVO);
 }

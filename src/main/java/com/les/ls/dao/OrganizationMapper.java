@@ -1,7 +1,9 @@
 package com.les.ls.dao;
 
 import com.les.ls.pojo.Organization;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface OrganizationMapper {
     int deleteByPrimaryKey(Long id);
 
