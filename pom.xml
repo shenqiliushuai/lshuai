@@ -28,6 +28,14 @@
             <artifactId>spire.pdf</artifactId>
             <version>4.10.2</version>
         </dependency>-->
+        <!--获取IP国家，城市
+        java11以下使用2.x版，3.x需要java11。
+        -->
+        <dependency>
+            <groupId>com.maxmind.geoip2</groupId>
+            <artifactId>geoip2</artifactId>
+            <version>2.16.1</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
