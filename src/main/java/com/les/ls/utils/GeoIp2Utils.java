@@ -9,7 +9,7 @@ import com.maxmind.geoip2.record.Country;
 import java.io.FileInputStream;
 import java.net.InetAddress;
 
-public final class GenIpUtils {
+public final class GeoIp2Utils {
     public static void main(String[] args) throws Exception{
         String url = "C:\\Users\\les.liu\\Desktop\\个人资料\\GeoLite2-City.mmdb";
 
