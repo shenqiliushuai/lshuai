@@ -6,7 +6,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 
 import javax.crypto.Cipher;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
@@ -48,6 +51,16 @@ public class EncryptAndDecryptUtils {
         System.out.println("signResult->[" + signResult + "]");
         Boolean checkResult = doCheck(RSA, SHA512_WITH_RSA, content, signResult, publicKey, StandardCharsets.UTF_8);
         System.out.println("checkResult->[" + checkResult + "]");
+    }
+
+    /**
+     * URL编码 (符合FRC1738规范)
+     *
+     * @param input 待编码的字符串
+     * @return 编码后的字符串
+     */
+    public static String FRC1738EncodeUrl(String input) throws Exception {
+        return URLEncoder.encode(input, StandardCharsets.UTF_8.name()).replace("+", "%20").replace("*", "%2A");
     }
 
     /**
