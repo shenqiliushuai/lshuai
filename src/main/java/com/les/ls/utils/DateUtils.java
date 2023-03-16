@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author lshuai
  */
-public class DateUtils {
+public final class DateUtils {
 
     public static final String yyyy_MM_dd_HH_mm_ss1 = "yyyy-MM-dd HH:mm:ss";
     public static final String yyyyMMddHHmmss = "yyyyMMddHHmmss";

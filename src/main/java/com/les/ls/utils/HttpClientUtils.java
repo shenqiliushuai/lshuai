@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * </p>
  */
-public class HttpClientUtils {
+public final class HttpClientUtils {
 
 
     public static void main(String[] args) {

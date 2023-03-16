@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class BufferedRandomAccessFile extends RandomAccessFile {
+public final class BufferedRandomAccessFile extends RandomAccessFile {
 
     private static final int DEFAULT_BUFFER_BIT_LEN = 10;
     private static final int DEFAULT_BUFFER_SIZE = 1 << DEFAULT_BUFFER_BIT_LEN;

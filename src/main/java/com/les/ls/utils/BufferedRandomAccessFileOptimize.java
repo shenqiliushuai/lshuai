@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author lshuai
  */
-public class BufferedRandomAccessFileOptimize extends RandomAccessFile {
+public final class BufferedRandomAccessFileOptimize extends RandomAccessFile {
     /**
      * 常用缓冲字节长度
      */

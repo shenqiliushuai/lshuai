@@ -16,7 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  *
  * @author lshuai
  */
-public class TerminalUtils {
+public final class TerminalUtils {
 
     public static void main(String[] args) {
         boolean pingResult = pingTest("www.baidu.com");

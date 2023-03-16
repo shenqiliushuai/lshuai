@@ -3,7 +3,7 @@ package com.les.ls.utils;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 
-public class MD5Util {
+public final class MD5Util {
 
 	/**
 	 * 检查MD5签名

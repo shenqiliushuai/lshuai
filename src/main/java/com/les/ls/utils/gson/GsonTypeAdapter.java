@@ -18,10 +18,11 @@ import java.util.Map;
 /**
  * Gson number转Double处理
  */
-public class GsonTypeAdapter extends TypeAdapter<Object> {
+public final class GsonTypeAdapter extends TypeAdapter<Object> {
 
     public static final TypeAdapterFactory FACTORY = new TypeAdapterFactory() {
         @Override
+        @SuppressWarnings("unchecked")
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
             if (type.getRawType() == Object.class) {
                 return (TypeAdapter<T>) new GsonTypeAdapter(gson);

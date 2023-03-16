@@ -6,17 +6,13 @@ import com.spire.pdf.utilities.PdfTable;
 import com.spire.pdf.utilities.PdfTableExtractor;
 */
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * PDF解析
  *
  * @author lshuai
  */
 @Deprecated
-public class PDFParser {
+public final class PDFParser {
     public static String pdfFileName;
 
     /*public static List<String> readPdfTableToList() {

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 /**
  * 常用算法加密解密工具类
  */
-public class EncryptAndDecryptUtils {
+public final class EncryptAndDecryptUtils {
 
     /**
      * 签名算法

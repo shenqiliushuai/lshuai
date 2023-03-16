@@ -13,7 +13,7 @@ import java.util.zip.ZipFile;
  * @author lshuai
  */
 @Slf4j
-public class ZipUtils {
+public final class ZipUtils {
 
     /**
      * zip解压
@@ -61,12 +61,5 @@ public class ZipUtils {
             return false;
         }
         return true;
-    }
-
-    public static void main(String[] args) throws Exception{
-        File file = new File("C:\\Users\\Administrator\\Desktop\\test.txt");
-        BufferedReader bf = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-        String abc = bf.readLine();
-        System.out.println(abc);
     }
 }

@@ -5,8 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.ToNumberPolicy;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.internal.bind.ObjectTypeAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -15,9 +14,8 @@ import java.util.List;
 /**
  * Gson number转Double处理
  */
-public class GsonUtil {
-
-    private static final Logger logger = LoggerFactory.getLogger(GsonUtil.class);
+@Slf4j
+public final class GsonUtil {
 
     public static Gson getGson() {
 
@@ -38,7 +36,7 @@ public class GsonUtil {
                 }
             }
         } catch (Exception e) {
-            logger.error("Gson处理异常,error={}", e.getMessage(), e);
+            log.error("Gson处理异常,error={}", e.getMessage(), e);
         }
         return gson;
     }
