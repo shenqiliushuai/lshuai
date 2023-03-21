@@ -25,14 +25,12 @@ public class CustomDispatcher<P extends ParamRule, R> {
 
     private final Map<String, CustomHandler<P, R>> handlers = new HashMap<>();
 
-    @PostConstruct
-    public void init() {
+    public @PostConstruct void init() {
         log.info("Init CustomHandler start...");
         initCustomHandler();
     }
 
-    @PreDestroy
-    public void destroy() {
+    public @PreDestroy void destroy() {
         log.info("Destroy CustomHandler start...");
         handlers.clear();
     }
