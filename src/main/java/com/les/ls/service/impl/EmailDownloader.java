@@ -4,6 +4,7 @@ import com.les.ls.pojo.dto.DownloadResult;
 import com.les.ls.pojo.dto.Placeholder;
 import com.les.ls.pojo.po.JfSetting;
 import org.apache.commons.lang.StringUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.mail.*;
 import javax.mail.internet.MimeMultipart;
@@ -113,7 +114,7 @@ public class EmailDownloader extends AbstractDownloader {
                 props.setProperty("mail.pop3.host", server);
                 props.setProperty("mail.pop3.port", port);
                 if ("1".equals(ssl)) {
-                    Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
+                    Security.addProvider(new BouncyCastleProvider());
                     props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
                     props.setProperty("mail.pop3.socketFactory.fallback", "false");
                     props.setProperty("mail.pop3.socketFactory.port", port);
