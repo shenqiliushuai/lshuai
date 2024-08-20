@@ -59,7 +59,7 @@ public class ExcelProcess {
             // 三折毛利润
             BigDecimal grossProfit_30 = off_30.subtract(goodsExport.getSupplyPrice());
             goodsExport.setGrossProfit_30(grossProfit_30);
-            // 一折毛利率 四舍五入模式
+            // 三折毛利率 四舍五入模式
             BigDecimal grossProfitRateOff_30 = grossProfit_30.divide(goodsExport.getSalesPrice(), 4, RoundingMode.HALF_UP);
             goodsExport.setGrossProfitRateOff_30(grossProfitRateOff_30.multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP) + "%");
 
